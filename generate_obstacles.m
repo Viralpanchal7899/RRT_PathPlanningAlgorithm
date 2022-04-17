@@ -37,3 +37,4 @@ for i_obs = 1:num_obstacles
     patch(obs_x,obs_y,'blue');
 end
 
+RRT(start_state,obstacles);

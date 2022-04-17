@@ -1,3 +1,4 @@
+function[path,path_length] = RRT(start_state,obstacles)
 e = 2;
 Px_max = 100;
 Py_max = 100;
@@ -20,6 +21,7 @@ rand_mat(i,2) = round(rand(1) * Py_max);
 px2 = rand_mat(i,1);
 py2 = rand_mat(i,2);
 nn_index = nearest_neighbour(tree_points,px2,py2);
+if nn_index == i
 px1 = tree_points(nn_index,1);
 py1 = tree_points(nn_index,2);
 is_colliding = collision_check_segment(px1,py1,px2,py2,obstacles);
@@ -33,7 +35,11 @@ if  is_colliding == 0
     tree_points(i,1) = px1 + e*cosd(theta);
     tree_points(i,2) = py1 + e*sind(theta);
 end
+end
 j=j+1;
 end
 hold on
-plot(parent_new(:,1),parent_new(:,2));
+path = tree_points;
+path_length = 2 * size(path);
+plot(path(:,1),path(:,2),'black');
+end
