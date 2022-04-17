@@ -4,31 +4,30 @@ Py_max = 100;
 
 px1 = start_state(1,1);
 py1 = start_state(1,2);
-tree_points = zeros(:,:)
+tree_points = zeros();
 tree_points(1,1) = px1(1,1);
-tree_points(1,2) = py1(1,2);
-px_new(1,1) = px1(1,1);
-py_new(1,2) = py1(1,2);
+tree_points(1,2) = py1(1,1);
+parent_px_new(1,1) = px1(1,1);
+parent_py_new(1,2) = py1(1,1);
 
-px2 = round(rand(1) * Px_max);
-py2 = round(rand(1) * Py_max);
-
-while px2<90
+rand_mat = zeros();
+i = 1;
+while tree_points(i,1)<90
+rand_mat(i,1) = round(rand(1) * Px_max); 
+rand_mat(i,2) = round(rand(1) * Py_max);
+px2 = rand_mat(i,1);
+py2 = rand_mat(i,2);
 nn_index = nearest_neighbour(tree_points,px2,py2);
 px1 = tree_points(nn_index,1);
 py1 = tree_points(nn_index,2);
-
 is_colliding = collision_check_segment(px1,py1,px2,py2,obstacles);
-i = 1;
 if  is_colliding == 0
     slope_m = (py2 - py1)/(px2 - px1);
-    theta = atan2(slope_m);
+    theta = atand(slope_m);
     i = i + 1;
-    tree_points(i,1) = e*cosd(theta);
-    tree_points(i,2) = e*sind(theta);
+    tree_points(i,1) = px1 + e*cosd(theta);
+    tree_points(i,2) = py1 + e*sind(theta);
 end
-px2 = round(rand(1) * Px_max);
-py2 = round(rand(1) * Py_max);
 end
 hold on
-plot(tree_points);
+plot(tree_points(:,1),tree_points(:,2));
