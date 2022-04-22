@@ -37,5 +37,33 @@ for i_obs = 1:num_obstacles
     patch(obs_x,obs_y,'blue');
 end
 
-path = RRT(start_state,obstacles);
+for z = 1:100
+    [path,path_length] = RRT(start_state,obstacles);
+    path = flipud(path);
+    A = [1 0 0 0;
+        0 1 0 0;
+        1 0 1 0;
+        0 1 0 1];
+    
+   p_k = eye(4);
+   Q = eye(4);
+   H_k = [1 0 0 0;
+       0 1 0 0]; 
+   for j = 1:size(path)
+        [x_i, y_i] = check_obstacle(j,path,obstacles,num_obstacles);
+        if x_i == 1
+            H_k = [H_k;
+                0 0 1 0];
+        end
+        if y_i == 1
+            H_k = [H_k;
+                0 0 0 1];
+        end
+        R_k = eye(size(H_k,1));
+        p_k = ((A * p_k * A' + Q)^(-1) + (H_k' * R_k^(-1) * H_k))^(-1);
+   end
+   disp(z)
+end
+        
+            
 

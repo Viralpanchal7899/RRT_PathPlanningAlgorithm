@@ -2,7 +2,7 @@
 
 function nn_index = nearest_neighbour(tree_points,px2,py2)
 rand_new_pose = [px2 py2];
-for i = 1: size(tree_points)
+for i = 1: size(tree_points,1)
     d(i,1) = norm(rand_new_pose - tree_points(i,:));
 end
 [M,I] = min(d);
