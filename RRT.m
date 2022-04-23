@@ -43,8 +43,8 @@ while path(m,1)~= start_state(1,1) && path(m,2) ~= start_state(1,2)
     path(m,2) = parent_new(new_parent_index,2);
 end
 
-path_length = 2 * size(path,1)
-hold on;
-plot(path(:,1),path(:,2),'black','LineWidth',2);
-plot(path(1,1),path(1,2),'*');
+path_length = 2 * size(path,1);
+% hold on;
+% plot(path(:,1),path(:,2),'black','LineWidth',2);
+% plot(path(1,1),path(1,2),'*');
 end

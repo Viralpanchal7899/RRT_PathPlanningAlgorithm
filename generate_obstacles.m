@@ -37,6 +37,7 @@ for i_obs = 1:num_obstacles
     patch(obs_x,obs_y,'blue');
 end
 
+f=1;
 for z = 1:100
     [path,path_length] = RRT(start_state,obstacles);
     path = flipud(path);
@@ -63,7 +64,31 @@ for z = 1:100
         p_k = ((A * p_k * A' + Q)^(-1) + (H_k' * R_k^(-1) * H_k))^(-1);
    end
    disp(z)
+   p_k_final(z,1) = trace(p_k);
+   global_path{z} = path;
+   global_path_length(z,1) = path_length;
 end
-        
+
+[M_SP,I_SP] = min(global_path_length);
+shortest_path = global_path{I_SP};
+hold on
+plot(shortest_path(:,1),shortest_path(:,2),'black','LineWidth',2);
+plot(shortest_path(size(shortest_path,1),1),shortest_path(size(shortest_path,1),2),'*');
+% title('Shortest Path');
+
+% figure
+[min_uncern,I_min_uncern] = min(p_k_final);
+min_uncern_path = global_path{I_min_uncern};
+hold on 
+plot(min_uncern_path(:,1),min_uncern_path(:,2),'blue','LineWidth',2);
+plot(min_uncern_path(size(min_uncern_path,1),1),min_uncern_path(size(min_uncern_path,1),2),'*');
+% title('Min Uncerntainty path')
+
+[max_uncern,I_max_uncern] = max(p_k_final);
+max_uncern_path = global_path{I_max_uncern};
+hold on 
+plot(max_uncern_path(:,1),max_uncern_path(:,2),'green','LineWidth',2);
+plot(max_uncern_path(size(max_uncern_path,1),1),max_uncern_path(size(max_uncern_path,1),2),'*');
+% title('Min Uncerntainty path')
             
 
