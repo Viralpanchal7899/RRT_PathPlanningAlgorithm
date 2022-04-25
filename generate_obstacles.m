@@ -1,4 +1,3 @@
-
 clear all; close all;
 figure(1); hold on;
 axis([0 100 0 100]);
@@ -51,7 +50,10 @@ for z = 1:100
    H_k = [1 0 0 0;
        0 1 0 0]; 
    for j = 1:size(path)
-        [x_i, y_i] = check_obstacle(j,path,obstacles,num_obstacles);
+%         [x_i, y_i] = check_obstacle(j,path,obstacles,num_obstacles);
+        p_x = path(j,1);
+        p_y = path(j,2);
+        [x_i, y_i] = sensor_check_obstacle(p_x,p_y,obstacles);
         if x_i == 1
             H_k = [H_k;
                 0 0 1 0];
@@ -78,24 +80,16 @@ ra_rb = global_std_x_y{I_SP};
 hold on
 plot(shortest_path(:,1),shortest_path(:,2),'black','LineWidth',2);
 plot(shortest_path(size(shortest_path,1),1),shortest_path(size(shortest_path,1),2),'*');
-max_ang_index = size(shortest_path,1) - 1;
-ang_index = 1;
 for e_sp = 1:size(shortest_path,1)
-    if ang_index ~= max_ang_index
-    ang = atan((shortest_path((ang_index+1),2)- shortest_path(ang_index,2))/(shortest_path((ang_index + 1),1) - shortest_path(ang_index,2)));
     ra = ra_rb(e_sp,1);
     rb = ra_rb(e_sp,2);
     x0 = shortest_path(e_sp,1);
     y0 = shortest_path(e_sp,2);
-    h(e_sp,1) = ellipse(ra,rb,ang,x0,y0,'r');
-    ang_index = ang_index + 1;
-    end
+    h(e_sp,1) = ellipse(ra,rb,0,x0,y0,'r');
 end
-% plot(h)
 title('Shortest Path');
 
 figure
-% re-plotting the arena first
 plot(start_state(1),start_state(2),'.r','MarkerSize',20);
 patch(goal_x,goal_y,'green');
 for i_obs = 1:num_obstacles
@@ -110,18 +104,12 @@ ra_rb_min_uncern = global_std_x_y{I_min_uncern};
 hold on 
 plot(min_uncern_path(:,1),min_uncern_path(:,2),'black','LineWidth',2);
 plot(min_uncern_path(size(min_uncern_path,1),1),min_uncern_path(size(min_uncern_path,1),2),'*');
-max_ang_index = size(min_uncern_path,1) - 1;
-ang_index = 1;
 for e_sp = 1:size(min_uncern_path,1)
-    if ang_index ~= max_ang_index
-    ang = atan((min_uncern_path((ang_index+1),2)- min_uncern_path(ang_index,2))/(min_uncern_path((ang_index + 1),1) - min_uncern_path(ang_index,2)));
     ra = ra_rb_min_uncern(e_sp,1);
     rb = ra_rb_min_uncern(e_sp,2);
     x0 = min_uncern_path(e_sp,1);
     y0 = min_uncern_path(e_sp,2);
-    h(e_sp,1) = ellipse(ra,rb,ang,x0,y0,'r');
-    ang_index = ang_index + 1;
-    end
+    h(e_sp,1) = ellipse(ra,rb,0,x0,y0,'r');
 end
 title('Min Uncerntainty path')
 
@@ -139,18 +127,12 @@ ra_rb_max_uncern = global_std_x_y{I_max_uncern};
 hold on 
 plot(max_uncern_path(:,1),max_uncern_path(:,2),'black','LineWidth',2);
 plot(max_uncern_path(size(max_uncern_path,1),1),max_uncern_path(size(max_uncern_path,1),2),'*');
-max_ang_index = size(max_uncern_path,1) - 1;
-ang_index = 1;
 for e_sp = 1:size(max_uncern_path,1)
-    if ang_index ~= max_ang_index
-    ang = atan((max_uncern_path((ang_index+1),2)- max_uncern_path(ang_index,2))/(max_uncern_path((ang_index + 1),1) - max_uncern_path(ang_index,2)));
     ra = ra_rb_max_uncern(e_sp,1);
     rb = ra_rb_max_uncern(e_sp,2);
     x0 = max_uncern_path(e_sp,1);
     y0 = max_uncern_path(e_sp,2);
-    h(e_sp,1) = ellipse(ra,rb,ang,x0,y0,'r');
-    ang_index = ang_index + 1;
-    end
+    h(e_sp,1) = ellipse(ra,rb,0,x0,y0,'r');
 end
 title('Max Uncerntainty path')
             
