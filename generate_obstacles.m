@@ -1,3 +1,6 @@
+% Updated - ViralPanchal 
+% SIMLAB 2
+
 clear all; close all;
 figure(1); hold on;
 axis([0 100 0 100]);
@@ -36,6 +39,7 @@ for i_obs = 1:num_obstacles
     patch(obs_x,obs_y,'blue');
 end
 
+% Kalman Filter z = iterations (1-100)
 f=1;
 for z = 1:100
     [path,path_length] = RRT(start_state,obstacles);
@@ -50,7 +54,6 @@ for z = 1:100
    H_k = [1 0 0 0;
        0 1 0 0]; 
    for j = 1:size(path)
-%         [x_i, y_i] = check_obstacle(j,path,obstacles,num_obstacles);
         p_x = path(j,1);
         p_y = path(j,2);
         [x_i, y_i] = sensor_check_obstacle(p_x,p_y,obstacles);
@@ -74,6 +77,7 @@ for z = 1:100
    global_path_length(z,1) = path_length;
 end
 
+% Plotting the shortest path achieved
 [M_SP,I_SP] = min(global_path_length);
 shortest_path = global_path{I_SP};
 ra_rb = global_std_x_y{I_SP};
@@ -89,6 +93,7 @@ for e_sp = 1:size(shortest_path,1)
 end
 title('Shortest Path');
 
+% Plotting the minimum uncertainty path 
 figure
 plot(start_state(1),start_state(2),'.r','MarkerSize',20);
 patch(goal_x,goal_y,'green');
@@ -113,6 +118,7 @@ for e_sp = 1:size(min_uncern_path,1)
 end
 title('Min Uncerntainty path')
 
+% Plotting the maximum uncertainty path
 figure
 plot(start_state(1),start_state(2),'.r','MarkerSize',20);
 patch(goal_x,goal_y,'green');

@@ -1,5 +1,12 @@
+% RRT Function
+% Viral Panchal - SIMLAB 2
+% This function takes the start_state and obstacles as input
+% and computes a path from start to goal region and saves it
+% in the output path matrix.
+% path_length is the epsilon(e)*size(path,1)
+
 function[path,path_length] = RRT(start_state,obstacles)
-e = 2;
+e = 2;    % epsilon
 Px_max = 100;
 Py_max = 100;
 px1 = start_state(1,1);
@@ -42,9 +49,5 @@ while path(m,1)~= start_state(1,1) && path(m,2) ~= start_state(1,2)
     path(m,1) = parent_new(new_parent_index,1);
     path(m,2) = parent_new(new_parent_index,2);
 end
-
 path_length = 2 * size(path,1);
-% hold on;
-% plot(path(:,1),path(:,2),'black','LineWidth',2);
-% plot(path(1,1),path(1,2),'*');
 end
